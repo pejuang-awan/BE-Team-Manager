@@ -15,14 +15,10 @@ func InitializeRouter() (router *gin.Engine) {
 		middleware.CorsMiddleware,
 	)
 	{
-		example := apiRoute.Group("/example")
-		{
-			example.GET("/get", api.GetAllExample)
-			example.GET("/get/:id", api.GetExampleById)
-			example.POST("/create", api.CreateExample)
-			example.PATCH("/update/:id", api.UpdateExample)
-			example.DELETE("/delete/:id", api.DeleteExample)
-		}
+		apiRoute.GET("/participants/:id", api.Participants)
+		apiRoute.GET("/tournaments/:id", api.Tournaments)
+		apiRoute.POST("/join", api.Join)
+		apiRoute.POST("/leave", api.Leave)
 	}
 
 	return router

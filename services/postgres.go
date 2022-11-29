@@ -24,8 +24,7 @@ func InitializeDatabase() {
 	}
 
 	db.AutoMigrate(
-		&models.Profile{},
-		&models.Example{},
+		&models.Team{},
 	)
 
 	Database = db
