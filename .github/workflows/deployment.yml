@@ -1,0 +1,41 @@
+name: backend-deployment
+
+on:
+  push:
+    branches:
+      - main
+
+env:
+  PROJECT_ID: si-tourney
+  SERVICE: be-team-manager
+  REGION: asia-southeast1
+
+jobs:
+  deploy:
+    name: Cloud Run Deployment
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Create gcp-credential.json
+        run: |
+          echo -e '${{ secrets.GCP_SA_KEY }}' >> gcp-credential.json
+      - name: Auth to GCP
+        uses: 'google-github-actions/auth@v0'
+        with:
+          credentials_json: '${{ secrets.GCP_SA_KEY }}'
+      - name: Configure Docker
+        run: |
+          gcloud auth configure-docker
+      - name: Build Image from Dockerfile
+        run: |
+          docker build -t gcr.io/${{ env.PROJECT_ID }}/${{ env.SERVICE }}:latest .
+      - name: Push to GCP Container Registry
+        run: |
+          docker push gcr.io/${{ env.PROJECT_ID }}/${{ env.SERVICE }}:latest
+      - name: Deploy to Cloud Run
+        uses: 'google-github-actions/deploy-cloudrun@v0'
+        with:
+          service: '${{ env.SERVICE }}'
+          image: 'gcr.io/${{ env.PROJECT_ID }}/${{ env.SERVICE }}'
+          region: '${{ env.REGION }}'
