@@ -60,7 +60,7 @@ func Participants(c *gin.Context) {
 			CaptainID:    rawTeam.CaptainID,
 			TournamentID: rawTeam.TournamentID,
 			TeamName:     rawTeam.TeamName,
-			Members:      strings.SplitAfter(rawTeam.Members, ","),
+			Members:      strings.Split(rawTeam.Members, ","),
 		})
 	}
 
@@ -82,7 +82,7 @@ func Tournaments(c *gin.Context) {
 			CaptainID:    rawTeam.CaptainID,
 			TournamentID: rawTeam.TournamentID,
 			TeamName:     rawTeam.TeamName,
-			Members:      strings.SplitAfter(rawTeam.Members, ","),
+			Members:      strings.Split(rawTeam.Members, ","),
 		})
 	}
 
