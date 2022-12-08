@@ -18,3 +18,8 @@ type TeamLeave struct {
 	CaptainID    string `json:"captainId"`
 	TournamentID int    `json:"tournamentId"`
 }
+
+type TeamCountResponse struct {
+	TeamCount    int `json:"teamCount"`
+	TournamentID int `json:"tournamentId"`
+}

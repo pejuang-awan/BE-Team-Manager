@@ -28,7 +28,15 @@ func Join(c *gin.Context) {
 
 	db.Create(&team)
 
-	c.JSON(http.StatusOK, models.Response{Data: input})
+	var count int64
+	db.Model(&models.Team{}).Where("tournament_id = ?", input.TournamentID).Count(&count)
+
+	response := models.TeamCountResponse{
+		TeamCount:    int(count),
+		TournamentID: input.TournamentID,
+	}
+
+	c.JSON(http.StatusOK, models.Response{Data: response})
 }
 
 func Leave(c *gin.Context) {
@@ -42,7 +50,15 @@ func Leave(c *gin.Context) {
 
 	db.Delete(&models.Team{}, "captain_id = ? AND tournament_id = ?", input.CaptainID, input.TournamentID)
 
-	c.JSON(http.StatusOK, models.Response{Data: "Successfully left tournament"})
+	var count int64
+	db.Model(&models.Team{}).Where("tournament_id = ?", input.TournamentID).Count(&count)
+
+	response := models.TeamCountResponse{
+		TeamCount:    int(count),
+		TournamentID: input.TournamentID,
+	}
+
+	c.JSON(http.StatusOK, models.Response{Data: response})
 }
 
 func Participants(c *gin.Context) {
